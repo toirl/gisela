@@ -1,4 +1,22 @@
-from bottle import route, run
+from bottle import Bottle, route, run
+from bottle.ext import sqlalchemy
+
+from gisela.model import engine, Base
+
+# --------------------------------
+# Add SQLAlchemy app
+# --------------------------------
+app = Bottle()
+
+plugin = sqlalchemy.Plugin(
+        engine,
+        Base.metadata,
+        keyword='db',
+        create=True,
+        commit=True,
+        use_kwargs=False
+)
+app.install(plugin)
 
 
 @route("/")
