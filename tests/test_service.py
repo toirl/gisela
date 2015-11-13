@@ -11,5 +11,27 @@ class TestService(unittest.TestCase):
         assert index() == "My name is Gisela."
 
 
+class TestTagService(unittest.TestCase):
+
+    def test_list(self):
+        from gisela.service import tag_list
+        assert tag_list() == {}
+
+    def test_create(self):
+        from gisela.service import tag_create
+        assert tag_create() == {}
+
+    def test_read(self):
+        from gisela.service import tag_read
+        assert tag_read() == {}
+
+    def test_update(self):
+        from gisela.service import tag_update
+        assert tag_update() == {}
+
+    def test_delete(self):
+        from gisela.service import tag_delete
+        assert tag_delete() == {}
+
 if __name__ == '__main__':
     unittest.main()
