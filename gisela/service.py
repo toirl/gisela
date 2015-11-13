@@ -3,7 +3,7 @@ from bottle import route, run
 
 @route("/")
 def index():
-    return "Hello Gisela!"
+    return "My name is Gisela."
 
 
 def main(host, port, debug=False):
