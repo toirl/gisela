@@ -4,12 +4,14 @@
 import unittest
 import datetime
 import time
+import json
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import func
 from gisela.model import Base, Tag, Timelog
 from gisela.helpers import sum_times
+from gisela.response import Success
  
 engine = create_engine("sqlite:///:memory:", echo=False)
 Base.metadata.create_all(engine)
@@ -162,6 +164,29 @@ class TestTimeModel(unittest.TestCase):
         assert result.duration == 65
         assert result.state == 0
 
+class TestSerializeModel(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        setup()
+
+    @classmethod
+    def tearDownClass(cls):
+        teardown()
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        session.rollback()
+
+    def test_read(self):
+        timelog = session.query(Timelog).filter(Timelog.id == 1).one()
+        success = Success()
+        result = json.loads(success.serialize(timelog))
+        assert result['data']['state'] == 0
+        assert len(result['data']['tags']) == 2
+        assert result['data']['tags'][0]['name'] == "Foo"
 
 if __name__ == '__main__':
     unittest.main()
