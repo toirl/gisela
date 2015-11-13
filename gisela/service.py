@@ -31,6 +31,31 @@ def tag_delete():
     return {}
 
 
+@route("/times", method="GET")
+def time_list():
+    return {}
+
+
+@route("/times", method="POST")
+def time_create():
+    return {}
+
+
+@route("/times/<id>", method="GET")
+def time_read():
+    return {}
+
+
+@route("/times/<id>", method="PUT")
+def time_update():
+    return {}
+
+
+@route("/times/<id>", method="DELETE")
+def time_delete():
+    return {}
+
+
 def main(host, port, debug=False):
     run(host=host, port=port, debug=debug)
 
