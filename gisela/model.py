@@ -18,6 +18,13 @@ class Tag(Base):
     name = Column(String, nullable=False)
     description = Column(String, nullable=False)
 
+    def __json__(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description
+        }
+
     def __init__(self, name, description=None):
         self.name = name
         self.description = description
@@ -31,6 +38,16 @@ class Timelog(Base):
     state = Column(Integer, nullable=False, default=0)
     description = Column(String)
     tags = relation(Tag, secondary=nm_tags_timelogs, backref="timelogs")
+
+    def __json__(self):
+        return {
+            "id": self.id,
+            "state": self.state,
+            "duration": self.duration,
+            "description": self.description,
+            "start_date": str(self.start_date),
+            "tags": [t.__json__() for t in self.tags]
+        }
 
     def __init__(self, duration=None):
         if duration is None:
