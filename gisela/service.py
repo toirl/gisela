@@ -1,4 +1,4 @@
-from bottle import Bottle, route, run
+from bottle import Bottle, run
 from bottle.ext import sqlalchemy
 
 from gisela.model import engine, Base
@@ -19,63 +19,63 @@ plugin = sqlalchemy.Plugin(
 app.install(plugin)
 
 
-@route("/")
-def index():
+@app.get("/")
+def index(db):
     return "My name is Gisela."
 
 
-@route("/tags", method="GET")
-def tag_list():
+@app.get("/tags")
+def tag_list(db):
     return {}
 
 
-@route("/tags", method="POST")
-def tag_create():
+@app.post("/tags")
+def tag_create(db):
     return {}
 
 
-@route("/tags/<id>", method="GET")
-def tag_read():
+@app.get("/tags/<id>")
+def tag_read(id, db):
     return {}
 
 
-@route("/tags/<id>", method="PUT")
-def tag_update():
+@app.put("/tags/<id>")
+def tag_update(id, db):
     return {}
 
 
-@route("/tags/<id>", method="DELETE")
-def tag_delete():
+@app.delete("/tags/<id>")
+def tag_delete(id, db):
     return {}
 
 
-@route("/times", method="GET")
-def time_list():
+@app.get("/times")
+def time_list(db):
     return {}
 
 
-@route("/times", method="POST")
-def time_create():
+@app.post("/times")
+def time_create(db):
     return {}
 
 
-@route("/times/<id>", method="GET")
-def time_read():
+@app.get("/times/<id>")
+def time_read(id, db):
     return {}
 
 
-@route("/times/<id>", method="PUT")
-def time_update():
+@app.put("/times/<id>")
+def time_update(id, db):
     return {}
 
 
-@route("/times/<id>", method="DELETE")
-def time_delete():
+@app.delete("/times/<id>")
+def time_delete(id, db):
     return {}
 
 
 def main(host, port, debug=False):
-    run(host=host, port=port, debug=debug)
+    run(app, host=host, port=port, debug=debug)
 
 if __name__ == '__main__':
     main("localhost", 8080)
