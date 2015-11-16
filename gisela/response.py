@@ -12,7 +12,12 @@ class Response(object):
         }
 
     def serialize(self, data):
-        if hasattr(data, "__json__"):
+        if isinstance(data, list):
+            items = []
+            for item in data:
+                items.append(item.__json__())
+            self.data["data"] = items
+        elif hasattr(data, "__json__"):
             self.data["data"] = data.__json__()
         else:
             self.data["data"] = None
