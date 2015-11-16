@@ -1,7 +1,8 @@
-from bottle import Bottle, run
+from bottle import Bottle, run, request
 from bottle.ext import sqlalchemy
 
-from gisela.model import engine, Base
+from gisela.model import engine, Base, Tag
+from gisela.response import Success
 
 # --------------------------------
 # Add SQLAlchemy app
@@ -26,27 +27,43 @@ def index(db):
 
 @app.get("/tags")
 def tag_list(db):
-    return {}
+    tags = db.query(Tag).all()
+    response = Success()
+    return response.serialize(tags)
 
 
 @app.post("/tags")
 def tag_create(db):
-    return {}
+    tag = Tag(request.params.get("name"),
+              request.params.get("description"))
+    db.add(tag)
+    db.commit()
+    response = Success()
+    return response.serialize(tag)
 
 
 @app.get("/tags/<id>")
 def tag_read(id, db):
-    return {}
+    tag = db.query(Tag).filter(Tag.id == id).one()
+    response = Success()
+    return response.serialize(tag)
 
 
 @app.put("/tags/<id>")
 def tag_update(id, db):
-    return {}
+    tag = db.query(Tag).filter(Tag.id == id).one()
+    tag.name = request.params.get("name", tag.name)
+    tag.description = request.params.get("description", tag.description)
+    db.commit()
+    response = Success()
+    return response.serialize(tag)
 
 
 @app.delete("/tags/<id>")
 def tag_delete(id, db):
-    return {}
+    #tag = db.query(Tag).filter(Tag.id == id).delete()
+    response = Success()
+    return response.serialize(None)
 
 
 @app.get("/times")
