@@ -185,7 +185,9 @@ class TestSerializeModel(unittest.TestCase):
         result = success.serialize(timelog)
         assert result['data']['state'] == 0
         assert len(result['data']['tags']) == 2
-        assert result['data']['tags'][0]['name'] == "Foo"
+        for tag in result['data']['tags']:
+            if tag["id"] == 1:
+                assert tag['name'] == "Foo"
 
 if __name__ == '__main__':
     unittest.main()
