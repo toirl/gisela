@@ -1,7 +1,8 @@
+import datetime
 from bottle import Bottle, run, request
 from bottle.ext import sqlalchemy
 
-from gisela.model import engine, Base, Tag
+from gisela.model import engine, Base, Tag, Timelog
 from gisela.response import Success
 
 # --------------------------------
@@ -61,34 +62,58 @@ def tag_update(id, db):
 
 @app.delete("/tags/<id>")
 def tag_delete(id, db):
-    #tag = db.query(Tag).filter(Tag.id == id).delete()
+    tag = db.query(Tag).filter(Tag.id == id).delete()
     response = Success()
+    db.commit()
     return response.serialize(None)
 
 
 @app.get("/times")
 def time_list(db):
-    return {}
+    times = db.query(Timelog).all()
+    response = Success()
+    return response.serialize(times)
 
 
 @app.post("/times")
 def time_create(db):
-    return {}
+    time = Timelog(request.params.get("start_date"),
+                   request.params.get("duration"),
+                   request.params.get("description"))
+
+    db.add(time)
+    db.commit()
+    response = Success()
+    return response.serialize(time)
 
 
 @app.get("/times/<id>")
 def time_read(id, db):
-    return {}
+    time = db.query(Timelog).filter(Timelog.id == id).one()
+    response = Success()
+    return response.serialize(time)
 
 
 @app.put("/times/<id>")
 def time_update(id, db):
-    return {}
+    time = db.query(Timelog).filter(Timelog.id == id).one()
+    start_date = request.params.get("start_date")
+    if start_date:
+        start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+        time.start_date = start_date
+    time.duration = int(request.params.get("duration", time.duration))
+    time.description = request.params.get("description", time.description)
+    db.commit()
+    response = Success()
+    return response.serialize(time)
 
 
 @app.delete("/times/<id>")
 def time_delete(id, db):
-    return {}
+    time = db.query(Timelog).filter(Timelog.id == id).delete()
+    db.commit()
+    response = Success()
+    return response.serialize(None)
 
 
 def main(host, port, debug=False):
