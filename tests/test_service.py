@@ -1,6 +1,7 @@
 # the inclusion of the tests module is not meant to offer best practices for
 # testing in general, but rather to support the `find_packages` example in
 # setup.py that excludes installing the "tests" package
+import datetime
 import unittest
 from webtest import TestApp
 from sqlalchemy import create_engine
@@ -11,26 +12,24 @@ engine = create_engine("sqlite:///:memory:", echo=False)
 Base.metadata.create_all(engine)
 session = sessionmaker(bind=engine)()
 
-
 def setup():
     t1 = Tag("Foo", "Foo description")
     t2 = Tag("Bar", "Baz description")
     t3 = Tag("Baz", "Baz description")
     session.add_all([t1, t2, t3])
 
-    tl1 = Timelog(60)
+    tl1 = Timelog(datetime.datetime(2015, 11, 15), 60)
     tl1.tags.append(t1)
     tl1.tags.append(t2)
-    tl2 = Timelog(120)
+    tl2 = Timelog(datetime.datetime(2015, 11, 16), 120)
     tl2.tags.append(t2)
     tl2.tags.append(t3)
-    tl3 = Timelog(180)
+    tl3 = Timelog(datetime.datetime(2015, 11, 17), 180)
     tl3.tags.append(t1)
     tl3.tags.append(t2)
     tl3.tags.append(t3)
     session.add_all([tl1, tl2, tl3])
     session.commit()
-
 
 def teardown():
     session.query(Tag).delete()
