@@ -2,6 +2,7 @@
 # testing in general, but rather to support the `find_packages` example in
 # setup.py that excludes installing the "tests" package
 import unittest
+from webtest import TestApp
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from gisela.model import Base, Tag, Timelog
@@ -41,77 +42,89 @@ class TestService(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        import gisela
         setup()
+        cls.app = TestApp(gisela.app)
 
     @classmethod
     def tearDownClass(cls):
         teardown()
 
     def test_index(self):
-        from gisela.service import index
-        assert index(session) == "My name is Gisela."
+        response = self.app.get("/")
+        assert response.status == '200 OK'
+        assert "My name is Gisela." in response
 
 
 class TestTagService(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        import gisela
         setup()
+        cls.app = TestApp(gisela.app)
 
     @classmethod
     def tearDownClass(cls):
         teardown()
 
     def test_list(self):
-        from gisela.service import tag_list
-        assert tag_list(session) == {}
+        response = self.app.get("/tags")
+        assert response.status == '200 OK'
 
     def test_create(self):
-        from gisela.service import tag_create
-        assert tag_create(session) == {}
+        response = self.app.post("/tags",
+                                 {"name": "New",
+                                  "description": "New description"})
+        assert response.status == '200 OK'
 
     def test_read(self):
-        from gisela.service import tag_read
-        assert tag_read(1, session) == {}
+        response = self.app.get("/tags/1")
+        assert response.status == '200 OK'
 
     def test_update(self):
-        from gisela.service import tag_update
-        assert tag_update(1, session) == {}
+        response = self.app.put("/tags/1",
+                                {"name": "Foo2",
+                                 "description": "Changed description"})
+        assert response.status == '200 OK'
+        assert response.json["data"]["name"] == "Foo2"
 
     def test_delete(self):
-        from gisela.service import tag_delete
-        assert tag_delete(1, session) == {}
+        response = self.app.delete("/tags/1")
+        assert response.status == '200 OK'
 
 
 class TestTimeService(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        import gisela
         setup()
+        cls.app = TestApp(gisela.app)
 
     @classmethod
     def tearDownClass(cls):
         teardown()
 
     def test_list(self):
-        from gisela.service import time_list
-        assert time_list(session) == {}
+        response = self.app.get("/times")
+        assert response.status == '200 OK'
 
     def test_create(self):
-        from gisela.service import time_create
-        assert time_create(session) == {}
+        response = self.app.post("/times")
+        assert response.status == '200 OK'
 
     def test_read(self):
-        from gisela.service import time_read
-        assert time_read(1, session) == {}
+        response = self.app.get("/times/1")
+        assert response.status == '200 OK'
 
     def test_update(self):
-        from gisela.service import time_update
-        assert time_update(1, session) == {}
+        response = self.app.put("/times/1")
+        assert response.status == '200 OK'
 
     def test_delete(self):
-        from gisela.service import time_delete
-        assert time_delete(1, session) == {}
+        response = self.app.delete("/times/1")
+        assert response.status == '200 OK'
 
 if __name__ == '__main__':
     unittest.main()
