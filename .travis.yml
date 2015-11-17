@@ -7,6 +7,6 @@ python:
   - "3.5"
   - "3.5-dev" # 3.5 development branch
 # command to install dependencies
-install: "python setup.py install"
+install: "pip install -e .[test]"
 # command to run tests
 script: "python setup.py test"
