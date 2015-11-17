@@ -4,7 +4,6 @@
 import unittest
 import datetime
 import time
-import json
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -183,7 +182,7 @@ class TestSerializeModel(unittest.TestCase):
     def test_read(self):
         timelog = session.query(Timelog).filter(Timelog.id == 1).one()
         success = Success()
-        result = json.loads(success.serialize(timelog))
+        result = success.serialize(timelog)
         assert result['data']['state'] == 0
         assert len(result['data']['tags']) == 2
         assert result['data']['tags'][0]['name'] == "Foo"
