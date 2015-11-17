@@ -1,5 +1,3 @@
-import json
-
 class Response(object):
 
     """Docstring for Response. """
@@ -21,7 +19,7 @@ class Response(object):
             self.data["data"] = data.__json__()
         else:
             self.data["data"] = None
-        return json.dumps(self.data)
+        return self.data
 
 class Success(Response):
 
