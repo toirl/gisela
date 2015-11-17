@@ -22,29 +22,45 @@ List all available timelogs
 
     curl -i -H "Accept: application/json"  -X GET \
     "http://localhost:8080/times"
-    {"status": "success", "data": [{"description": "Foo Description", "id": 1, "start_date": "2015-02-01", "duration": 50, "tags": []}, ...]}
+    {"status": "success", "data": [{"description": "Foo Description", "id": 1, "state": 0, "start_date": "2015-02-01", "duration": 50, "tags": []}, ...]}
 
 Create a new timelog
 
     curl -i -H "Accept: application/json" -X POST \
     -d "duration=50&&description=Quex Description&start_date=2015-01-01" \
     "http://localhost:8080/times"
-    {"status": "success", "data": {"description": "Quex Description", "id": 1, "start_date": "2015-02-01", "duration": 50, "tags": []}}
+    {"status": "success", "data": {"description": "Quex Description", "id": 1, "state": 0, "start_date": "2015-02-01", "duration": 50, "tags": []}}
 
 Get a specific timelog
 
     curl -i -H "Accept: application/json" -X GET \
     "http://localhost:8080/times/1"
-    {"status": "success", "data": {"description": "Quex Description", "id": 1, "start_date": "2015-02-01", "duration": 50, "tags": []}}
+    {"status": "success", "data": {"description": "Quex Description", "id": 1, "state": 0, "start_date": "2015-02-01", "duration": 50, "tags": []}}
 
 Update a specific timelog
 
     curl -i -H "Accept: application/json" -X PUT \
     -d "description=Changed" \
     "http://localhost:8080/times/1"
-    {"status": "success", "data": {"description": "Changed", "id": 1, "start_date": "2015-02-01", "duration": 50, "tags": []}}
+    {"status": "success", "data": {"description": "Changed", "id": 1, "state": 0, "start_date": "2015-02-01", "duration": 50, "tags": []}}
 
+Start a specific timelog
 
+    curl -i -H "Accept: application/json" -X PUT \
+    "http://localhost:8080/times/1/start"
+    {"status": "success", "data": {"description": "Changed", "id": 1, "state": 1, "start_date": "2015-02-01", "duration": 50, "tags": []}}
+
+Pause a specific timelog
+
+    curl -i -H "Accept: application/json" -X PUT \
+    "http://localhost:8080/times/1/pause"
+    {"status": "success", "data": {"description": "Changed", "id": 1, "state": 2, "start_date": "2015-02-01", "duration": 50, "tags": []}}
+
+Stop a specific timelog
+
+    curl -i -H "Accept: application/json" -X PUT \
+    "http://localhost:8080/times/1/pause"
+    {"status": "success", "data": {"description": "Changed", "id": 1, "state": 0, "start_date": "2015-02-01", "duration": 50, "tags": []}}
 Delete a speficic tag:
 
     curl -i -H "Accept: application/json" -X DELETE \
