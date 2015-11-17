@@ -22,18 +22,17 @@ def setup():
     t3 = Tag("Baz", "Baz description")
     session.add_all([t1, t2, t3])
 
-    tl1 = Timelog(60)
+    tl1 = Timelog(datetime.date(2015, 11, 15), 60)
     tl1.tags.append(t1)
     tl1.tags.append(t2)
-    tl2 = Timelog(120)
+    tl2 = Timelog(datetime.date(2015, 11, 16), 120)
     tl2.tags.append(t2)
     tl2.tags.append(t3)
-    tl3 = Timelog(180)
+    tl3 = Timelog(datetime.date(2015, 11, 17), 180)
     tl3.tags.append(t1)
     tl3.tags.append(t2)
     tl3.tags.append(t3)
     session.add_all([tl1, tl2, tl3])
-
     session.commit()
 
 def teardown():
@@ -108,7 +107,7 @@ class TestTimeModel(unittest.TestCase):
         session.rollback()
 
     def test_read(self):
-        today = datetime.date.today()
+        today = datetime.date(2015, 11, 15)
         result = session.query(Timelog).filter(Timelog.id == 1).one()
         assert result.duration == 60
         assert result.state == 0
@@ -126,7 +125,7 @@ class TestTimeModel(unittest.TestCase):
 
     def test_create(self):
         t1 = Timelog()
-        t2 = Timelog(50)
+        t2 = Timelog('2015-11-17', 50)
         session.add_all([t1, t2])
         result = session.query(Timelog).all()
         assert len(result) == 5
