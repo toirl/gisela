@@ -89,7 +89,7 @@ class TestTagService(unittest.TestCase):
         assert response.json["data"]["name"] == "Foo2"
 
     def test_delete(self):
-        response = self.app.delete("/tags/1")
+        response = self.app.delete("/tags/3")
         assert response.status == '200 OK'
 
 
@@ -122,7 +122,7 @@ class TestTimeService(unittest.TestCase):
         assert response.status == '200 OK'
 
     def test_delete(self):
-        response = self.app.delete("/times/1")
+        response = self.app.delete("/times/3")
         assert response.status == '200 OK'
 
 if __name__ == '__main__':
