@@ -115,6 +115,29 @@ def time_delete(id, db):
     response = Success()
     return response.serialize(None)
 
+@app.put("/times/<id>/start")
+def time_delete(id, db):
+    time = db.query(Timelog).filter(Timelog.id == id).one()
+    time.start()
+    db.commit()
+    response = Success()
+    return response.serialize(time)
+
+@app.put("/times/<id>/pause")
+def time_delete(id, db):
+    time = db.query(Timelog).filter(Timelog.id == id).one()
+    time.pause()
+    db.commit()
+    response = Success()
+    return response.serialize(time)
+
+@app.put("/times/<id>/stop")
+def time_delete(id, db):
+    time = db.query(Timelog).filter(Timelog.id == id).one()
+    time.stop()
+    db.commit()
+    response = Success()
+    return response.serialize(time)
 
 def main(host, port, debug=False):
     run(app, host=host, port=port, debug=debug)

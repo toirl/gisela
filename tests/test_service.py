@@ -134,5 +134,25 @@ class TestTimeService(unittest.TestCase):
         response = self.app.delete("/times/3")
         assert response.status == '200 OK'
 
+    def test_start(self):
+        response = self.app.put("/times/1/start")
+        assert response.json["data"]["state"] == 1
+        assert response.status == '200 OK'
+        response = self.app.put("/times/1/stop")
+
+    def test_pause(self):
+        response = self.app.put("/times/1/start")
+        response = self.app.put("/times/1/pause")
+        assert response.json["data"]["state"] == 2
+        assert response.status == '200 OK'
+        response = self.app.put("/times/1/stop")
+        assert response.status == '200 OK'
+
+    def test_stop(self):
+        response = self.app.put("/times/1/start")
+        response = self.app.put("/times/1/stop")
+        assert response.json["data"]["state"] == 0
+        assert response.status == '200 OK'
+
 if __name__ == '__main__':
     unittest.main()
