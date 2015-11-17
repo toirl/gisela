@@ -49,10 +49,17 @@ class Timelog(Base):
             "tags": [t.__json__() for t in self.tags]
         }
 
-    def __init__(self, duration=None):
-        if duration is None:
-            duration = 0
-        self.duration = duration
+    def __init__(self, start_date=None, duration=None, description=None):
+        if start_date is not None:
+            if (isinstance(start_date, datetime.datetime)
+                or isinstance(start_date, datetime.date)):
+                self.start_date = start_date
+            else:
+                self.start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d')
+        if duration is not None:
+            self.duration = int(duration)
+        if description:
+            self.description = description
 
     def start(self, start=None):
         if not start:
