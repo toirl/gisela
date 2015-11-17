@@ -110,7 +110,10 @@ class TestTimeService(unittest.TestCase):
         assert response.status == '200 OK'
 
     def test_create(self):
-        response = self.app.post("/times")
+        response = self.app.post("/times",
+                                 {"start_date": "2015-01-01",
+                                  "duration": 25,
+                                  "description": "25 minutes"})
         assert response.status == '200 OK'
 
     def test_read(self):
@@ -118,8 +121,14 @@ class TestTimeService(unittest.TestCase):
         assert response.status == '200 OK'
 
     def test_update(self):
-        response = self.app.put("/times/1")
+        response = self.app.put("/times/1",
+                                {"start_date": "2015-11-01",
+                                 "duration": 50,
+                                 "description": "Changed"})
         assert response.status == '200 OK'
+        assert response.json["data"]["start_date"].find("2015-11-01") > -1
+        assert response.json["data"]["duration"] == 50
+        assert response.json["data"]["description"] == "Changed"
 
     def test_delete(self):
         response = self.app.delete("/times/3")
