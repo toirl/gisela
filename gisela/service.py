@@ -1,8 +1,8 @@
 import datetime
-from bottle import Bottle, run, request
+from bottle import Bottle, run, request, HTTPResponse
 from bottle.ext import sqlalchemy
 
-from gisela.model import engine, Base, Tag, Timelog
+from gisela.model import engine, Base, Tag, Timelog, serialize
 from gisela.response import Success
 
 # --------------------------------
@@ -29,8 +29,7 @@ def index(db):
 @app.get("/tags")
 def tag_list(db):
     tags = db.query(Tag).all()
-    response = Success()
-    return response.serialize(tags)
+    return serialize(tags)
 
 
 @app.post("/tags")
@@ -39,15 +38,13 @@ def tag_create(db):
               request.params.get("description"))
     db.add(tag)
     db.commit()
-    response = Success()
-    return response.serialize(tag)
+    return HTTPResponse(serialize(tag), "201 OK")
 
 
 @app.get("/tags/<id>")
 def tag_read(id, db):
     tag = db.query(Tag).filter(Tag.id == id).one()
-    response = Success()
-    return response.serialize(tag)
+    return serialize(tag)
 
 
 @app.put("/tags/<id>")
@@ -56,23 +53,20 @@ def tag_update(id, db):
     tag.name = request.params.get("name", tag.name)
     tag.description = request.params.get("description", tag.description)
     db.commit()
-    response = Success()
-    return response.serialize(tag)
+    return serialize(tag)
 
 
 @app.delete("/tags/<id>")
 def tag_delete(id, db):
     tag = db.query(Tag).filter(Tag.id == id).delete()
-    response = Success()
     db.commit()
-    return response.serialize(None)
+    return HTTPResponse(None, "204 OK")
 
 
 @app.get("/times")
 def time_list(db):
     times = db.query(Timelog).all()
-    response = Success()
-    return response.serialize(times)
+    return serialize(times)
 
 
 @app.post("/times")
@@ -83,15 +77,13 @@ def time_create(db):
 
     db.add(time)
     db.commit()
-    response = Success()
-    return response.serialize(time)
+    return HTTPResponse(serialize(time), "201 OK")
 
 
 @app.get("/times/<id>")
 def time_read(id, db):
     time = db.query(Timelog).filter(Timelog.id == id).one()
-    response = Success()
-    return response.serialize(time)
+    return serialize(time)
 
 
 @app.put("/times/<id>")
@@ -104,40 +96,35 @@ def time_update(id, db):
     time.duration = int(request.params.get("duration", time.duration))
     time.description = request.params.get("description", time.description)
     db.commit()
-    response = Success()
-    return response.serialize(time)
+    return serialize(time)
 
 
 @app.delete("/times/<id>")
 def time_delete(id, db):
     time = db.query(Timelog).filter(Timelog.id == id).delete()
     db.commit()
-    response = Success()
-    return response.serialize(None)
+    return HTTPResponse(None, "204 OK")
 
 @app.put("/times/<id>/start")
-def time_delete(id, db):
+def time_start(id, db):
     time = db.query(Timelog).filter(Timelog.id == id).one()
     time.start()
     db.commit()
-    response = Success()
-    return response.serialize(time)
+    return serialize(time)
 
 @app.put("/times/<id>/pause")
-def time_delete(id, db):
+def time_pause(id, db):
     time = db.query(Timelog).filter(Timelog.id == id).one()
     time.pause()
     db.commit()
-    response = Success()
-    return response.serialize(time)
+    return serialize(time)
 
 @app.put("/times/<id>/stop")
-def time_delete(id, db):
+def time_stop(id, db):
     time = db.query(Timelog).filter(Timelog.id == id).one()
     time.stop()
     db.commit()
-    response = Success()
-    return response.serialize(time)
+    return serialize(time)
 
 def main(host, port, debug=False):
     run(app, host=host, port=port, debug=debug)
