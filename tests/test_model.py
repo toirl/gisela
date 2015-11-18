@@ -180,7 +180,7 @@ class TestSerializeModel(unittest.TestCase):
 
     def test_read(self):
         timelog = session.query(Timelog).filter(Timelog.id == 1).one()
-        result = Response(timelog).serialize()
+        result = Response(timelog)
         assert result['data']['state'] == 0
         assert len(result['data']['tags']) == 2
         for tag in result['data']['tags']:

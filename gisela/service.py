@@ -29,7 +29,7 @@ def index(db):
 @app.get("/tags")
 def tag_list(db):
     tags = db.query(Tag).all()
-    return Response(tags).serialize()
+    return Response(tags)
 
 
 @app.post("/tags")
@@ -38,13 +38,13 @@ def tag_create(db):
               request.params.get("description"))
     db.add(tag)
     db.commit()
-    return HTTPResponse(Response(tag).serialize(), "201 OK")
+    return HTTPResponse(Response(tag), "201 OK")
 
 
 @app.get("/tags/<id>")
 def tag_read(id, db):
     tag = db.query(Tag).filter(Tag.id == id).one()
-    return Response(tag).serialize()
+    return Response(tag)
 
 
 @app.put("/tags/<id>")
@@ -53,7 +53,7 @@ def tag_update(id, db):
     tag.name = request.params.get("name", tag.name)
     tag.description = request.params.get("description", tag.description)
     db.commit()
-    return Response(tag).serialize()
+    return Response(tag)
 
 
 @app.delete("/tags/<id>")
@@ -66,7 +66,7 @@ def tag_delete(id, db):
 @app.get("/times")
 def time_list(db):
     times = db.query(Timelog).all()
-    return Response(times).serialize()
+    return Response(times)
 
 
 @app.post("/times")
@@ -77,13 +77,13 @@ def time_create(db):
 
     db.add(time)
     db.commit()
-    return HTTPResponse(Response(time).serialize(), "201 OK")
+    return HTTPResponse(Response(time), "201 OK")
 
 
 @app.get("/times/<id>")
 def time_read(id, db):
     time = db.query(Timelog).filter(Timelog.id == id).one()
-    return Response(time).serialize()
+    return Response(time)
 
 
 @app.put("/times/<id>")
@@ -96,7 +96,7 @@ def time_update(id, db):
     time.duration = int(request.params.get("duration", time.duration))
     time.description = request.params.get("description", time.description)
     db.commit()
-    return Response(time).serialize()
+    return Response(time)
 
 
 @app.delete("/times/<id>")
@@ -110,21 +110,21 @@ def time_start(id, db):
     time = db.query(Timelog).filter(Timelog.id == id).one()
     time.start()
     db.commit()
-    return Response(time).serialize()
+    return Response(time)
 
 @app.put("/times/<id>/pause")
 def time_pause(id, db):
     time = db.query(Timelog).filter(Timelog.id == id).one()
     time.pause()
     db.commit()
-    return Response(time).serialize()
+    return Response(time)
 
 @app.put("/times/<id>/stop")
 def time_stop(id, db):
     time = db.query(Timelog).filter(Timelog.id == id).one()
     time.stop()
     db.commit()
-    return Response(time).serialize()
+    return Response(time)
 
 def main(host, port, debug=False):
     run(app, host=host, port=port, debug=debug)
