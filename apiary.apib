@@ -13,16 +13,14 @@ Timelogs can be tagged to identify the time for later evaluation.
 
 + Response 200 (application/json)
 
-    [
-        {
-            "status": "success",
-            "data": {
-                "id": 1,
-                "name": "Foo",
-                "description": "Foo description"
-            }
+    {
+        "status": "success",
+        "data": {
+            "id": 1,
+            "name": "Foo",
+            "description": "Foo description"
         }
-    ]
+    }
 
 ### Create a New Tag [POST]
 
@@ -62,16 +60,14 @@ object containing the name and a short description of the tag.
 
 + Response 200 (application/json)
 
-    [
-        {
-            "status": "success",
-            "data": {
-                "id": 1,
-                "name": "Foo",
-                "description": "Foo description"
-            }
+    {
+        "status": "success",
+        "data": {
+            "id": 1,
+            "name": "Foo",
+            "description": "Foo description"
         }
-    ]
+    }
 
 ### Update a tag detail [PUT]
 
@@ -110,20 +106,18 @@ A timelog description a period of time defined by its duration.
 
 + Response 200 (application/json)
 
-    [
-        {
-            "status": "success",
-            "data": {
-                "id": 1,
-                "name": "Bar",
-                "start_data": "2015-11-18 20:53:00",
-                "duration": 50,
-                "description": "Bar description",
-                "state": 1,
-                "tags": []
-            }
+    {
+        "status": "success",
+        "data": {
+            "id": 1,
+            "name": "Bar",
+            "start_data": "2015-11-18 20:53:00",
+            "duration": 50,
+            "description": "Bar description",
+            "state": 1,
+            "tags": []
         }
-    ]
+    }
 
 ### Create a New Timelog [POST]
 
