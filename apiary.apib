@@ -1,0 +1,127 @@
+FORMAT: 1A
+HOST: http://gisela.apiblueprint.org/
+
+# Gisela API
+
+Gisela is a simple API allowing consumers to track and tag timelogs.
+
+## Tags Collection [/tags]
+
+Timelogs can be tagged to identify the time for later evaluation.
+
+### List All Tags [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "success": true,
+                "data": {
+                    "id": id,
+                    "name": "Foo",
+                    "description": "Foo description"
+                }
+            }
+        ]
+
+### Create a New Tag [POST]
+
+You may create your tags using this action. It takes a JSON
+object containing the name and a short description of the tag.
+
++ Request (application/json)
+
+        {
+            "name": "Foo",
+            "description": "Foo description"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /questions/2
+
+    + Body
+    
+            {
+                "success": true,
+                "data": {
+                    "id": id,
+                    "name": "Foo",
+                    "description": "Foo description"
+                }
+            }
+## Tag [/tag/{tag_id}]
+
++ Parameters
+    + tag_id (number) - ID of the Tag in the form of an integer
+
+### Read a tag detail [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "success": true,
+                "data": {
+                    "id": id,
+                    "name": "Foo",
+                    "description": "Foo description"
+                }
+            }
+        ]
+
+### Update a tag detail [PUT]
+
+You may update the details of a tag using this action. It takes a JSON
+object containing the name and a short description of the tag.
+
++ Request (application/json)
+
+        {
+            "name": "Foo",
+            "description": "Foo description"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "data": {
+                "id": id,
+                "name": "Foo",
+                "description": "Foo description"
+            }
+        }
+        
+### Delete a tag [DELETE]
+
+You can delete a tag using this action.
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "data": null
+        }
+        
+## Timelogs Collection [/times]
+
+### List All Timelogs [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "success": true,
+                "data": {
+                    "id": id,
+                    "name": "Bar",
+                    "start_data": "2015-11-18 20:53:00",
+                    "duration": 50,
+                    "description": "Bar description",
+                    "tags": []
+                }
+            }
+        ]
