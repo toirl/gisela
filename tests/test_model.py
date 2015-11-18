@@ -125,7 +125,7 @@ class TestTimeModel(unittest.TestCase):
 
     def test_create(self):
         t1 = Timelog()
-        t2 = Timelog('2015-11-17', 50)
+        t2 = Timelog(datetime.datetime(2015,11,1), 50)
         session.add_all([t1, t2])
         result = session.query(Timelog).all()
         assert len(result) == 5
