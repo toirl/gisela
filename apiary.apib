@@ -15,9 +15,12 @@ Timelogs can be tagged to identify the time for later evaluation.
 
     [
         {
-            "id": 1,
-            "name": "Foo",
-            "description": "Foo description"
+            "status": "success",
+            "data": {
+                "id": 1,
+                "name": "Foo",
+                "description": "Foo description"
+            }
         }
     ]
 
@@ -42,9 +45,12 @@ object containing the name and a short description of the tag.
     + Body
 
         {
-            "id": 1,
-            "name": "Foo",
-            "description": "Foo description"
+            "status": "success",
+            "data": {
+                "id": 1,
+                "name": "Foo",
+                "description": "Foo description"
+            }
         }
 
 ## Tag [/tag/{tag_id}]
@@ -58,9 +64,12 @@ object containing the name and a short description of the tag.
 
     [
         {
-            "id": 1,
-            "name": "Foo",
-            "description": "Foo description"
+            "status": "success",
+            "data": {
+                "id": 1,
+                "name": "Foo",
+                "description": "Foo description"
+            }
         }
     ]
 
@@ -79,21 +88,19 @@ object containing the name and a short description of the tag.
 + Response 200 (application/json)
 
     {
-        "id": 1,
-        "name": "Foo",
-        "description": "Foo description"
+        "status": "success",
+        "data": {
+            "id": 1,
+            "name": "Foo",
+            "description": "Foo description"
+        }
     }
 
 ### Delete a tag [DELETE]
 
 You can delete a tag using this action.
 
-+ Response 200 (application/json)
-
-    {
-        "success": true,
-        "data": null
-    }
++ Response 204
 
 ## Timelogs Collection [/times]
 
@@ -105,13 +112,16 @@ A timelog description a period of time defined by its duration.
 
     [
         {
-            "id": 1,
-            "name": "Bar",
-            "start_data": "2015-11-18 20:53:00",
-            "duration": 50,
-            "description": "Bar description",
-            "state": 1,
-            "tags": []
+            "status": "success",
+            "data": {
+                "id": 1,
+                "name": "Bar",
+                "start_data": "2015-11-18 20:53:00",
+                "duration": 50,
+                "description": "Bar description",
+                "state": 1,
+                "tags": []
+            }
         }
     ]
 
@@ -123,6 +133,8 @@ object containing the name and a short description of the tag.
 + Request (application/json)
 
     {
+        "status": "success",
+        "data": {}
         "name": "Bar",
         "start_data": "2015-11-18 20:53:00",
         "duration": 50,
@@ -139,12 +151,46 @@ object containing the name and a short description of the tag.
     + Body
 
         {
+            "status": "success",
+            "data": {
+                "id": 1,
+                "name": "Bar",
+                "start_data": "2015-11-18 20:53:00",
+                "duration": 50,
+                "description": "Bar description",
+                "state": 0,
+                "tags": [
+                    {
+                        "id": 1,
+                        "name": "Foo",
+                        "description": "Foo description"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Baz",
+                        "description": "Baz description"
+                    }
+                ]
+            }
+        }
+
+## Timelog [/tag/{timelog_id}]
+
++ Parameters
+    + timelog_id (number) - ID of the Timelog in the form of an integer
+
+### Read a timelog detail [GET]
+
++ Response 200 (application/json)
+
+    {
+        "status": "success",
+        "data": {
             "id": 1,
             "name": "Bar",
             "start_data": "2015-11-18 20:53:00",
             "duration": 50,
             "description": "Bar description",
-            "state": 0,
             "tags": [
                 {
                     "id": 1,
@@ -158,34 +204,6 @@ object containing the name and a short description of the tag.
                 }
             ]
         }
-
-## Timelog [/tag/{timelog_id}]
-
-+ Parameters
-    + timelog_id (number) - ID of the Timelog in the form of an integer
-
-### Read a timelog detail [GET]
-
-+ Response 200 (application/json)
-
-    {
-        "id": 1,
-        "name": "Bar",
-        "start_data": "2015-11-18 20:53:00",
-        "duration": 50,
-        "description": "Bar description",
-        "tags": [
-            {
-                "id": 1,
-                "name": "Foo",
-                "description": "Foo description"
-            },
-            {
-                "id": 2,
-                "name": "Baz",
-                "description": "Baz description"
-            }
-        ]
     }
 
 ### Update a tag detail [PUT]
@@ -206,24 +224,27 @@ object containing the following data.
 + Response 200 (application/json)
 
     {
-        "id": 1,
-        "name": "Bar",
-        "start_data": "2015-11-18 20:53:00",
-        "duration": 50,
-        "description": "Bar description",
-        "state": 1,
-        "tags": [
-            {
-                "id": 1,
-                "name": "Foo",
-                "description": "Foo description"
-            },
-            {
-                "id": 2,
-                "name": "Baz",
-                "description": "Baz description"
-            }
-        ]
+        "status": "success",
+        "data": {
+            "id": 1,
+            "name": "Bar",
+            "start_data": "2015-11-18 20:53:00",
+            "duration": 50,
+            "description": "Bar description",
+            "state": 1,
+            "tags": [
+                {
+                    "id": 1,
+                    "name": "Foo",
+                    "description": "Foo description"
+                },
+                {
+                    "id": 2,
+                    "name": "Baz",
+                    "description": "Baz description"
+                }
+            ]
+        }
     }
 
 ### Delete a timelog [DELETE]
@@ -237,24 +258,27 @@ You can delete a timelog using this action.
 + Response 200 (application/json)
 
     {
-        "id": 1,
-        "name": "Bar",
-        "start_data": "2015-11-18 20:53:00",
-        "duration": 50,
-        "description": "Bar description",
-        "state": 1,
-        "tags": [
-            {
-                "id": 1,
-                "name": "Foo",
-                "description": "Foo description"
-            },
-            {
-                "id": 2,
-                "name": "Baz",
-                "description": "Baz description"
-            }
-        ]
+        "status": "success",
+        "data": {
+            "id": 1,
+            "name": "Bar",
+            "start_data": "2015-11-18 20:53:00",
+            "duration": 50,
+            "description": "Bar description",
+            "state": 1,
+            "tags": [
+                {
+                    "id": 1,
+                    "name": "Foo",
+                    "description": "Foo description"
+                },
+                {
+                    "id": 2,
+                    "name": "Baz",
+                    "description": "Baz description"
+                }
+            ]
+        }
     }
 
 ### Pause a timelog [PUT /times/{timelog_id}/start]
@@ -262,24 +286,27 @@ You can delete a timelog using this action.
 + Response 200 (application/json)
 
     {
-        "id": 1,
-        "name": "Bar",
-        "start_data": "2015-11-18 20:53:00",
-        "duration": 50,
-        "description": "Bar description",
-        "state": 2,
-        "tags": [
-            {
-                "id": 1,
-                "name": "Foo",
-                "description": "Foo description"
-            },
-            {
-                "id": 2,
-                "name": "Baz",
-                "description": "Baz description"
-            }
-        ]
+        "status": "success",
+        "data": {
+            "id": 1,
+            "name": "Bar",
+            "start_data": "2015-11-18 20:53:00",
+            "duration": 50,
+            "description": "Bar description",
+            "state": 2,
+            "tags": [
+                {
+                    "id": 1,
+                    "name": "Foo",
+                    "description": "Foo description"
+                },
+                {
+                    "id": 2,
+                    "name": "Baz",
+                    "description": "Baz description"
+                }
+            ]
+        }
     }
 
 ### Stop a timelog [PUT /times/{timelog_id}/stop]
@@ -287,22 +314,25 @@ You can delete a timelog using this action.
 + Response 200 (application/json)
 
     {
-        "id": 1,
-        "name": "Bar",
-        "start_data": "2015-11-18 20:53:00",
-        "duration": 50,
-        "description": "Bar description",
-        "state": 0,
-        "tags": [
-            {
-                "id": 1,
-                "name": "Foo",
-                "description": "Foo description"
-            },
-            {
-                "id": 2,
-                "name": "Baz",
-                "description": "Baz description"
-            }
-        ]
+        "status": "success",
+        "data": {
+            "id": 1,
+            "name": "Bar",
+            "start_data": "2015-11-18 20:53:00",
+            "duration": 50,
+            "description": "Bar description",
+            "state": 0,
+            "tags": [
+                {
+                    "id": 1,
+                    "name": "Foo",
+                    "description": "Foo description"
+                },
+                {
+                    "id": 2,
+                    "name": "Baz",
+                    "description": "Baz description"
+                }
+            ]
+        }
     }
