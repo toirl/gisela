@@ -182,9 +182,9 @@ class TestSerializeModel(unittest.TestCase):
         timelog = session.query(Timelog).filter(Timelog.id == 1).one()
         success = Success()
         result = success.serialize(timelog)
-        assert result['data']['state'] == 0
-        assert len(result['data']['tags']) == 2
-        for tag in result['data']['tags']:
+        assert result['state'] == 0
+        assert len(result['tags']) == 2
+        for tag in result['tags']:
             if tag["id"] == 1:
                 assert tag['name'] == "Foo"
 
