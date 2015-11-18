@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import func
 from gisela.model import Base, Tag, Timelog
 from gisela.helpers import sum_times
-from gisela.response import Success
+from gisela.response import Response
  
 engine = create_engine("sqlite:///:memory:", echo=False)
 Base.metadata.create_all(engine)
@@ -180,11 +180,10 @@ class TestSerializeModel(unittest.TestCase):
 
     def test_read(self):
         timelog = session.query(Timelog).filter(Timelog.id == 1).one()
-        success = Success()
-        result = success.serialize(timelog)
-        assert result['state'] == 0
-        assert len(result['tags']) == 2
-        for tag in result['tags']:
+        result = Response(timelog).serialize()
+        assert result['data']['state'] == 0
+        assert len(result['data']['tags']) == 2
+        for tag in result['data']['tags']:
             if tag["id"] == 1:
                 assert tag['name'] == "Foo"
 

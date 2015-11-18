@@ -86,7 +86,7 @@ class TestTagService(unittest.TestCase):
                                 {"name": "Foo2",
                                  "description": "Changed description"})
         assert response.status == '200 OK'
-        assert response.json["name"] == "Foo2"
+        assert response.json["data"]["name"] == "Foo2"
 
     def test_delete(self):
         response = self.app.delete("/tags/3")
@@ -126,9 +126,9 @@ class TestTimeService(unittest.TestCase):
                                  "duration": 50,
                                  "description": "Changed"})
         assert response.status == '200 OK'
-        assert response.json["start_date"].find("2015-11-01") > -1
-        assert response.json["duration"] == 50
-        assert response.json["description"] == "Changed"
+        assert response.json["data"]["start_date"].find("2015-11-01") > -1
+        assert response.json["data"]["duration"] == 50
+        assert response.json["data"]["description"] == "Changed"
 
     def test_delete(self):
         response = self.app.delete("/times/3")
@@ -136,14 +136,14 @@ class TestTimeService(unittest.TestCase):
 
     def test_start(self):
         response = self.app.put("/times/1/start")
-        assert response.json["state"] == 1
+        assert response.json["data"]["state"] == 1
         assert response.status == '200 OK'
         response = self.app.put("/times/1/stop")
 
     def test_pause(self):
         response = self.app.put("/times/1/start")
         response = self.app.put("/times/1/pause")
-        assert response.json["state"] == 2
+        assert response.json["data"]["state"] == 2
         assert response.status == '200 OK'
         response = self.app.put("/times/1/stop")
         assert response.status == '200 OK'
@@ -151,7 +151,7 @@ class TestTimeService(unittest.TestCase):
     def test_stop(self):
         response = self.app.put("/times/1/start")
         response = self.app.put("/times/1/stop")
-        assert response.json["state"] == 0
+        assert response.json["data"]["state"] == 0
         assert response.status == '200 OK'
 
 if __name__ == '__main__':
