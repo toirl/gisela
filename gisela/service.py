@@ -1,5 +1,5 @@
 import datetime
-from bottle import Bottle, run, request, HTTPResponse
+from bottle import Bottle, request, HTTPResponse
 from bottle.ext import sqlalchemy
 
 from gisela.model import engine, Base, Tag, Timelog
@@ -125,9 +125,3 @@ def time_stop(id, db):
     time.stop()
     db.commit()
     return Response(time)
-
-def main(host, port, debug=False):
-    run(app, host=host, port=port, debug=debug)
-
-if __name__ == '__main__':
-    main("localhost", 8080)
