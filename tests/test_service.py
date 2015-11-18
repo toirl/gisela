@@ -75,7 +75,7 @@ class TestTagService(unittest.TestCase):
         response = self.app.post("/tags",
                                  {"name": "New",
                                   "description": "New description"})
-        assert response.status == '200 OK'
+        assert response.status == '201 OK'
 
     def test_read(self):
         response = self.app.get("/tags/1")
@@ -90,7 +90,7 @@ class TestTagService(unittest.TestCase):
 
     def test_delete(self):
         response = self.app.delete("/tags/3")
-        assert response.status == '200 OK'
+        assert response.status == '204 OK'
 
 
 class TestTimeService(unittest.TestCase):
@@ -114,7 +114,7 @@ class TestTimeService(unittest.TestCase):
                                  {"start_date": "2015-01-01",
                                   "duration": 25,
                                   "description": "25 minutes"})
-        assert response.status == '200 OK'
+        assert response.status == '201 OK'
 
     def test_read(self):
         response = self.app.get("/times/1")
@@ -132,7 +132,7 @@ class TestTimeService(unittest.TestCase):
 
     def test_delete(self):
         response = self.app.delete("/times/3")
-        assert response.status == '200 OK'
+        assert response.status == '204 OK'
 
     def test_start(self):
         response = self.app.put("/times/1/start")
