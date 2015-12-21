@@ -34,8 +34,8 @@ def tag_list(db):
 
 @app.post("/tags")
 def tag_create(db):
-    tag = Tag(request.params.get("name"),
-              request.params.get("description"))
+    tag = Tag(request.json.get("name"),
+              request.json.get("description"))
     db.add(tag)
     db.commit()
     return HTTPResponse(Response(tag), "201 OK")
@@ -50,8 +50,8 @@ def tag_read(id, db):
 @app.put("/tags/<id>")
 def tag_update(id, db):
     tag = db.query(Tag).filter(Tag.id == id).one()
-    tag.name = request.params.get("name", tag.name)
-    tag.description = request.params.get("description", tag.description)
+    tag.name = request.json.get("name", tag.name)
+    tag.description = request.json.get("description", tag.description)
     db.commit()
     return Response(tag)
 
@@ -71,10 +71,13 @@ def time_list(db):
 
 @app.post("/times")
 def time_create(db):
-    time = Timelog(request.params.get("start_date"),
-                   request.params.get("duration"),
-                   request.params.get("description"))
-
+    time = Timelog(request.json.get("start_date"),
+                   request.json.get("duration"),
+                   request.json.get("description"))
+    # Add tags to the timelog
+    for tag_id in request.json.get("tags", []):
+        tag = db.query(Tag).filter(Tag.id == tag_id).one()
+        time.tags.append(tag)
     db.add(time)
     db.commit()
     return HTTPResponse(Response(time), "201 OK")
@@ -89,12 +92,19 @@ def time_read(id, db):
 @app.put("/times/<id>")
 def time_update(id, db):
     time = db.query(Timelog).filter(Timelog.id == id).one()
-    start_date = request.params.get("start_date")
+    start_date = request.json.get("start_date")
     if start_date:
         start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
         time.start_date = start_date
-    time.duration = int(request.params.get("duration", time.duration))
-    time.description = request.params.get("description", time.description)
+    time.duration = int(request.json.get("duration", time.duration))
+    time.description = request.json.get("description", time.description)
+    # Add/Remove tags
+    tag_ids = request.json.get("tags", [])
+    if tag_ids:
+        time.tags = []
+        for tag_id in tag_ids:
+            tag = db.query(Tag).filter(Tag.id == tag_id).one()
+            time.tags.append(tag)
     db.commit()
     return Response(time)
 
