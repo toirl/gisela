@@ -1,6 +1,7 @@
 import datetime
 from bottle import Bottle, request, HTTPResponse
 from bottle.ext import sqlalchemy
+from bottle import static_file
 
 from gisela.model import engine, Base, Tag, Timelog
 from gisela.response import Response
@@ -19,6 +20,10 @@ plugin = sqlalchemy.Plugin(
         use_kwargs=False
 )
 app.install(plugin)
+
+@app.route('/demo/<filename>')
+def server_static(filename):
+        return static_file(filename, root='./demo')
 
 
 @app.get("/")
