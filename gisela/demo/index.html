@@ -1,0 +1,56 @@
+<html ng-app="giselaApp">
+<head>
+  <meta charset="utf8" />
+  <title>Gisela Demo</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <script src="app.js"></script>
+</head>
+<body>
+  <div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h1>Times</h1>
+      <table class="table" ng-controller="TimesList">
+        <tr>
+          <th>Date</th>
+          <th>Duration</th>
+          <th>Description</th>
+        </tr>
+        <tr ng-repeat="time in times">
+          <td>{{time.start_data}}</td>
+          <td>{{time.duration}}</td>
+          <td>{{time.description}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-md-4">
+      <h1>Tags</h1>
+      <table class="table" ng-controller="TagsList">
+        <tr>
+          <th>Name</th>
+        </tr>
+        <tr ng-repeat="tag in tags">
+          <td>{{tag.name}}</td>
+        </tr>
+      </table>
+      <h1>New Tag</h1>
+      <form>
+        <div class="form-group">
+          <label for="tagname">Name</label>
+          <input class="form-control" id="tagname" placeholder="Name of tag">
+        </div>
+        <div class="form-group">
+          <label for="tagdescription">Password</label>
+          <textarea class="form-control" id="tagdescription" placeholder="Description of the tag"></textarea>
+        </div> 
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+  </div>
+  </div>
+</body>
+</html>
