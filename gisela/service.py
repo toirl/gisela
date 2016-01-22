@@ -1,5 +1,5 @@
 import datetime
-from bottle import Bottle, request, HTTPResponse
+from bottle import Bottle, request, response, HTTPResponse
 from bottle.ext import sqlalchemy
 from bottle import static_file
 
@@ -21,6 +21,16 @@ plugin = sqlalchemy.Plugin(
 )
 app.install(plugin)
 
+@app.hook('after_request')
+def enable_cors():
+    """
+    You need to add some headers to each request.
+    Don't use the wildcard '*' for Access-Control-Allow-Origin in production.
+    """
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
 @app.route('/demo/<filename>')
 def server_static(filename):
         return static_file(filename, root='./demo')
@@ -30,6 +40,10 @@ def server_static(filename):
 def index(db):
     return "My name is Gisela."
 
+
+@app.route("/tags", method=["OPTIONS"])
+def allow_options():
+    return {}
 
 @app.get("/tags")
 def tag_list(db):
