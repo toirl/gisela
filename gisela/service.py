@@ -42,6 +42,7 @@ def index(db):
 
 
 @app.route("/tags", method=["OPTIONS"])
+@app.route("/times", method=["OPTIONS"])
 def allow_options():
     return {}
 
