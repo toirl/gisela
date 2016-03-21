@@ -78,6 +78,13 @@ def timer_update(id, db):
     return Response(timer)
 
 
+@app.delete("/timers/<id>")
+def timer_delete(id, db):
+    timer = db.query(Timer).filter(Timer.id == id).delete()
+    db.commit()
+    return Response(timer)
+
+
 @app.get("/tags")
 def tag_list(db):
     tags = db.query(Tag).all()
