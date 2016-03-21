@@ -43,8 +43,9 @@ def index(db):
 
 
 @app.route("/tags", method=["OPTIONS"])
+@app.route("/tags/<id>", method=["OPTIONS"])
 @app.route("/times", method=["OPTIONS"])
-def allow_options():
+def allow_options(id=None):
     return {}
 
 @app.get("/tags")
@@ -81,7 +82,7 @@ def tag_update(id, db):
 def tag_delete(id, db):
     tag = db.query(Tag).filter(Tag.id == id).delete()
     db.commit()
-    return HTTPResponse(None, "204 OK")
+    return Response(tag)
 
 
 @app.get("/times")
