@@ -21,6 +21,7 @@ plugin = sqlalchemy.Plugin(
 )
 app.install(plugin)
 
+
 @app.hook('after_request')
 def enable_cors():
     """
@@ -55,7 +56,7 @@ def tag_list(db):
 @app.post("/tags")
 def tag_create(db):
     tag = Tag(request.json.get("name"),
-              request.json.get("description"))
+              request.json.get("description", ""))
     db.add(tag)
     db.commit()
     return HTTPResponse(Response(tag), "201 OK")
