@@ -12,6 +12,11 @@ nm_tags_timelogs = Table('nm_tags_timelogs', Base.metadata,
     Column('task_id', Integer, ForeignKey('timelogs.id'))
 )
 
+nm_tags_timers = Table('nm_tags_timers', Base.metadata,
+    Column('tag_id', Integer, ForeignKey('tags.id')),
+    Column('timer_id', Integer, ForeignKey('timers.id'))
+)
+
 class Tag(Base):
     """Tag"""
     __tablename__ = "tags"
@@ -29,6 +34,29 @@ class Tag(Base):
     def __init__(self, name, description=None):
         self.name = name
         self.description = description
+
+
+class Timer(Base):
+    """Timer"""
+    __tablename__ = "timers"
+    id = Column(Integer, primary_key=True)
+    description = Column(String)
+    tags = relation(Tag, secondary=nm_tags_timers, backref="timers")
+
+    def __json__(self):
+        return {
+            "id": self.id,
+            "name": "Foo",
+            "time": {"duration": 0, "state": 0},
+            "description": self.description,
+            "tags": [t.__json__() for t in self.tags]
+        }
+
+    def __init__(self, description=None):
+        if description:
+            self.description = description
+        self.tags = []
+
 
 class Timelog(Base):
     """Timelog"""

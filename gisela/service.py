@@ -3,7 +3,7 @@ from bottle import Bottle, request, response, HTTPResponse
 from bottle.ext import sqlalchemy
 from bottle import static_file
 
-from gisela.model import engine, Base, Tag, Timelog
+from gisela.model import engine, Base, Tag, Timelog, Timer
 from gisela.response import Response
 
 # --------------------------------
@@ -45,8 +45,38 @@ def index(db):
 @app.route("/tags", method=["OPTIONS"])
 @app.route("/tags/<id>", method=["OPTIONS"])
 @app.route("/times", method=["OPTIONS"])
+@app.route("/timers", method=["OPTIONS"])
+@app.route("/timers/<id>", method=["OPTIONS"])
 def allow_options(id=None):
     return {}
+
+
+@app.post("/timers")
+def timer_create(db):
+    timer = Timer(request.json.get("description", ""))
+    db.add(timer)
+    db.commit()
+    return Response(timer)
+
+
+@app.get("/timers")
+def timer_list(db):
+    tags = db.query(Timer).all()
+    return Response(tags)
+
+
+@app.put("/timers/<id>")
+def timer_update(id, db):
+    timer = db.query(Timer).filter(Timer.id == id).one()
+    timer.description = request.json.get("description", timer.description)
+    timer.tags = []
+    tags = request.json.get("tags", [])
+    for tag in tags:
+        tag = db.query(Tag).filter(Tag.id == tag.get("id")).one()
+        timer.tags.append(tag)
+    db.commit()
+    return Response(timer)
+
 
 @app.get("/tags")
 def tag_list(db):
