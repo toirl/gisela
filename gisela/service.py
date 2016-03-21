@@ -59,7 +59,7 @@ def tag_create(db):
               request.json.get("description", ""))
     db.add(tag)
     db.commit()
-    return HTTPResponse(Response(tag), "201 OK")
+    return Response(tag)
 
 
 @app.get("/tags/<id>")
