@@ -74,7 +74,7 @@ class Timelog(Base):
             "state": self.state,
             "duration": self.duration,
             "description": self.description,
-            "start_date": str(self.start_date),
+            "start_date": str(self.start_date.date()),
             "tags": [t.__json__() for t in self.tags]
         }
 
