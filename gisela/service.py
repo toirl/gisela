@@ -134,12 +134,12 @@ def time_create(db):
                    request.json.get("duration"),
                    request.json.get("description"))
     # Add tags to the timelog
-    for tag_id in request.json.get("tags", []):
-        tag = db.query(Tag).filter(Tag.id == tag_id).one()
+    for tagdata in request.json.get("tags", []):
+        tag = db.query(Tag).filter(Tag.id == tagdata.get("id")).one()
         time.tags.append(tag)
     db.add(time)
     db.commit()
-    return HTTPResponse(Response(time), "201 OK")
+    return Response(time)
 
 
 @app.get("/times/<id>")
