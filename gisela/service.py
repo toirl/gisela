@@ -194,3 +194,58 @@ def time_create(db):
 #    time.stop()
 #    db.commit()
 #    return Response(time)
+
+def week_magic(day):
+    day_of_week = day.weekday()
+
+    to_beginning_of_week = datetime.timedelta(days=day_of_week)
+    beginning_of_week = day - to_beginning_of_week
+
+    to_end_of_week = datetime.timedelta(days=6 - day_of_week)
+    end_of_week = day + to_end_of_week
+
+    return (beginning_of_week, end_of_week)
+
+@app.get("/report")
+def report(db):
+    sw, ew = week_magic(datetime.date.today())
+    start_date = request.params.get("start")
+    end_date = request.params.get("end")
+    if start_date:
+        y,m,d = map(int, start_date.split("-"))
+        start_date = datetime.date(y,m,d)
+    else:
+        start_date = sw
+    if end_date:
+        y,m,d = map(int, end_date.split("-"))
+        end_date = datetime.date(y,m,d)
+    else:
+        end_date = ew
+
+    tags = request.params.get("tags")
+    times = []
+    for time in db.query(Timelog).all():
+        if time.start_date.date() <= end_date and time.start_date.date() >= start_date:
+            times.append(time)
+    return "\n".join(zeiterfassung(times))
+
+def zeiterfassung(times):
+    out = []
+    #05.01.2015  0:15h a ab  [2379-100-100] Material zu Wasquik ansehen
+    def format_duration(duration):
+        m = duration/60
+        h = m/60
+        m = m%60
+        return "{0:02d}:{1:02d}".format(h, m)
+
+    total = 0
+    for time in times:
+        total += time.duration
+        out.append("{date}  {duration}h a {author}  [{tags}] {description}"
+                   .format(date=time.start_date.date(),
+                           duration=format_duration(time.duration),
+                           author="ti",
+                           tags=", ".join([t.name for t in time.tags]),
+                           description=time.description))
+    out.append("\nTotal: {0}h".format(format_duration(total)))
+    return out
