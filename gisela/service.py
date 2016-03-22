@@ -142,55 +142,55 @@ def time_create(db):
     return Response(time)
 
 
-@app.get("/times/<id>")
-def time_read(id, db):
-    time = db.query(Timelog).filter(Timelog.id == id).one()
-    return Response(time)
-
-
-@app.put("/times/<id>")
-def time_update(id, db):
-    time = db.query(Timelog).filter(Timelog.id == id).one()
-    start_date = request.json.get("start_date")
-    if start_date:
-        start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
-        time.start_date = start_date
-    time.duration = int(request.json.get("duration", time.duration))
-    time.description = request.json.get("description", time.description)
-    # Add/Remove tags
-    tag_ids = request.json.get("tags", [])
-    if tag_ids:
-        time.tags = []
-        for tag_id in tag_ids:
-            tag = db.query(Tag).filter(Tag.id == tag_id).one()
-            time.tags.append(tag)
-    db.commit()
-    return Response(time)
-
-
-@app.delete("/times/<id>")
-def time_delete(id, db):
-    time = db.query(Timelog).filter(Timelog.id == id).delete()
-    db.commit()
-    return HTTPResponse(None, "204 OK")
-
-@app.put("/times/<id>/start")
-def time_start(id, db):
-    time = db.query(Timelog).filter(Timelog.id == id).one()
-    time.start()
-    db.commit()
-    return Response(time)
-
-@app.put("/times/<id>/pause")
-def time_pause(id, db):
-    time = db.query(Timelog).filter(Timelog.id == id).one()
-    time.pause()
-    db.commit()
-    return Response(time)
-
-@app.put("/times/<id>/stop")
-def time_stop(id, db):
-    time = db.query(Timelog).filter(Timelog.id == id).one()
-    time.stop()
-    db.commit()
-    return Response(time)
+#@app.get("/times/<id>")
+#def time_read(id, db):
+#    time = db.query(Timelog).filter(Timelog.id == id).one()
+#    return Response(time)
+#
+#
+#@app.put("/times/<id>")
+#def time_update(id, db):
+#    time = db.query(Timelog).filter(Timelog.id == id).one()
+#    start_date = request.json.get("start_date")
+#    if start_date:
+#        start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+#        time.start_date = start_date
+#    time.duration = int(request.json.get("duration", time.duration))
+#    time.description = request.json.get("description", time.description)
+#    # Add/Remove tags
+#    tag_ids = request.json.get("tags", [])
+#    if tag_ids:
+#        time.tags = []
+#        for tag_id in tag_ids:
+#            tag = db.query(Tag).filter(Tag.id == tag_id).one()
+#            time.tags.append(tag)
+#    db.commit()
+#    return Response(time)
+#
+#
+#@app.delete("/times/<id>")
+#def time_delete(id, db):
+#    time = db.query(Timelog).filter(Timelog.id == id).delete()
+#    db.commit()
+#    return HTTPResponse(None, "204 OK")
+#
+#@app.put("/times/<id>/start")
+#def time_start(id, db):
+#    time = db.query(Timelog).filter(Timelog.id == id).one()
+#    time.start()
+#    db.commit()
+#    return Response(time)
+#
+#@app.put("/times/<id>/pause")
+#def time_pause(id, db):
+#    time = db.query(Timelog).filter(Timelog.id == id).one()
+#    time.pause()
+#    db.commit()
+#    return Response(time)
+#
+#@app.put("/times/<id>/stop")
+#def time_stop(id, db):
+#    time = db.query(Timelog).filter(Timelog.id == id).one()
+#    time.stop()
+#    db.commit()
+#    return Response(time)
