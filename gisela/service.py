@@ -125,7 +125,8 @@ def tag_delete(id, db):
 
 @app.get("/times")
 def time_list(db):
-    times = db.query(Timelog).all()
+    times = db.query(Timelog).order_by(Timelog.id.desc(),
+                                       Timelog.start_date.desc()).all()
     return Response(times)
 
 
