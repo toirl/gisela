@@ -130,6 +130,24 @@ def time_list(db):
     return Response(times)
 
 
+@app.get("/times/export")
+def time_export(db):
+    data = []
+    times = []
+    # Header
+    data.append("Datum       Zeit   S B   [AP] Zusammenfassung")
+    data.append("==============================================================================")
+    for id in sorted([int(id) for id in request.GET.get("times").split(",")]):
+        times.append(db.query(Timelog).filter(Timelog.id == id).one())
+    data.append("\n".join(zeiterfassung(times)))
+    data.append("==============================================================================")
+    out = "\n".join(data)
+    response.set_header("Content-type", "text/plain")
+    response.set_header("Content-Disposition", "attachment; filename=export.txt")
+    response.set_header("Content-Length", len(out))
+    return out
+
+
 @app.post("/times")
 def time_create(db):
     time = Timelog(request.json.get("start_date"),
@@ -243,10 +261,10 @@ def zeiterfassung(times):
     total = 0
     for time in times:
         total += time.duration
-        out.append("{date}  {duration}h a {author}  [{tags}] {description}"
-                   .format(date=time.start_date.date(),
+        out.append("{date}  {duration}h a {author:3} [{tags}] {description}"
+                   .format(date=time.start_date.date().strftime("%d.%m.%Y"),
                            duration=format_duration(time.duration),
-                           author="ti",
+                           author="xxx",
                            tags=", ".join([t.name for t in time.tags]),
                            description=time.description))
     out.append("\nTotal: {0}h".format(format_duration(total)))
