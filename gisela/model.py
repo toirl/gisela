@@ -94,7 +94,7 @@ class Timelog(Base):
     @property
     def week(self):
         """Will return the week of the year of the start_date"""
-        return self.start_date.date().isocalendar()[1]
+        return "CW{week}".format(week=self.start_date.date().isocalendar()[1])
 
     def start(self, start=None):
         if not start:
