@@ -261,7 +261,7 @@ def zeiterfassung(times):
     total = 0
     for time in times:
         total += time.duration
-        out.append("{date}  {duration}h a {author:3} [{tags}] {description}"
+        out.append(u"{date}  {duration}h a {author:3} [{tags}] {description}"
                    .format(date=time.start_date.date().strftime("%d.%m.%Y"),
                            duration=format_duration(time.duration),
                            author="xxx",
