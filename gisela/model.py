@@ -75,6 +75,7 @@ class Timelog(Base):
             "duration": self.duration,
             "description": self.description,
             "start_date": str(self.start_date.date()),
+            "week": self.week,
             "tags": [t.__json__() for t in self.tags]
         }
 
@@ -89,6 +90,11 @@ class Timelog(Base):
             self.duration = int(duration)
         if description:
             self.description = description
+
+    @property
+    def week(self):
+        """Will return the week of the year of the start_date"""
+        return self.start_date.date().isocalendar()[1]
 
     def start(self, start=None):
         if not start:
